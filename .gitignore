@@ -1,0 +1,11 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+
+# Streamlit temporary files
+.streamlit/
+
+# OS-specific files
+.DS_Store
