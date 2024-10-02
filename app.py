@@ -1,40 +1,37 @@
 import streamlit as st
-import speech_recognition as sr
-from gtts import gTTS
 import os
 from io import BytesIO
-from pydub import AudioSegment
+from rag_indexer import RAGIndexer
+from gemini import GeminiLLM
 
-# Function to process text input
-def process_text_input(text):
-    # Placeholder for generative AI model response
-    response = f"AI Response to: {text}"
-    return response
+# Initialize RAG Indexer
+rag_indexer = RAGIndexer('student_pdfs')
 
-# Function to process voice input
-def process_voice_input(audio_file):
-    recognizer = sr.Recognizer()
-    audio = AudioSegment.from_file(audio_file)
-    audio.export("temp.wav", format="wav")
-    with sr.AudioFile("temp.wav") as source:
-        audio_data = recognizer.record(source)
-        text = recognizer.recognize_google(audio_data)
-    os.remove("temp.wav")
-    return text
+def process_text_input_top_1(text):
+    print(text)
+    most_similar_pdf, most_similar_text = rag_indexer.query_index_top_1(text)
+    print(most_similar_pdf)
+    response = GeminiLLM.generate_response(text, most_similar_text)
+    return f"{response}\n\nSource: {most_similar_pdf} \n\nText: {most_similar_text}"
+
+def process_text_input_top_n(text):
+    top_n_pdfs = rag_indexer.query_index(text, top_n=2)
+    responses = []
+    for pdf, similarity in top_n_pdfs:
+        most_similar_text = rag_indexer.pdf_texts[pdf]
+        response = GeminiLLM.generate_response(text, most_similar_text)
+        # responses.append(f"{response}\n\nSource: {pdf} \n\nText: {most_similar_text}")
+        responses.append(f"{response}\n\n[Source]:( {pdf})")
+    return responses
 
 # Streamlit app
-st.title("Voice and Text Based Input Interface for GenAI Chat")
+st.title("Voice and Text Based Governemnt Scheme Matcher")
 
 # Text input
 text_input = st.text_input("Enter your text here:")
 if text_input:
-    response = process_text_input(text_input)
+    print(text_input)
+    response = process_text_input_top_1(text_input)
     st.write(response)
-
-# Voice input
-audio_file = st.file_uploader("Upload your voice file here:", type=["wav", "mp3", "ogg"])
-if audio_file:
-    text_from_voice = process_voice_input(audio_file)
-    st.write(f"Recognized Text: {text_from_voice}")
-    response = process_text_input(text_from_voice)
-    st.write(response)
+    # for response in process_text_input_top_n(text_input):
+    #     st.write(response)

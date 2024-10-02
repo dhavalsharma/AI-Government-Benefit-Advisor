@@ -1,0 +1,1 @@
+pip install PyMuPDF scikit-learn requests python-dotenv google-generativeai

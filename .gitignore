@@ -1,11 +1,14 @@
-# Virtual environment
-venv/
+# Ignore .env file
+.env
 
-# Python cache
+# Ignore Python cache files
 __pycache__/
+*.pyc
 
-# Streamlit temporary files
-.streamlit/
+# Ignore virtual environment directories
+venv/
+env/
 
-# OS-specific files
+# Ignore other common files
 .DS_Store
+*.log
