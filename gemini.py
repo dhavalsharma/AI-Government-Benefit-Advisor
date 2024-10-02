@@ -1,3 +1,9 @@
+"""
+This file defines a GeminiLLM class that interacts with the Gemini API to provide scholarship advice.
+The class loads environment variables, including the API key, and defines system prompts to guide the interaction.
+The system prompts include instructions for gathering student information and providing tailored scholarship recommendations.
+"""
+
 import os
 import requests
 from dotenv import load_dotenv
@@ -7,12 +13,15 @@ import google.generativeai as genai
 load_dotenv()
 
 class GeminiLLM:
-    API_KEY = os.getenv('GEMINI_API_KEY')
+    # Load the API key from environment variables
+    API = os.getenv('GEMINI_API_KEY')
     
-    # Define the system prompt
+    # Define the system prompt for general guidance
     system_prompt = """
     You are a helpful, knowledgeable, and empathetic scholarship advisor assisting students in finding the most relevant government scholarships based on their academic, economic, and geographic conditions.
-"""
+    """
+    
+    # Define the system prompt for gathering student information and providing recommendations
     system_prompt_1 = """
     - Gather Student Information:
       - Ask the student for their academic background (current level of education, GPA, field of study, certifications or achievements).
@@ -21,46 +30,40 @@ class GeminiLLM:
       - Consider any additional personal factors (minority status, first-generation student, leadership experience, extracurricular activities).
 
     - Provide Tailored Scholarship Recommendations:
-      - Analyze the student's responses and match them with the most relevant government scholarships.
-      - Sort the scholarships by priority based on the student’s financial need, academic merit, and geographic location.
-      - Provide key information about each scholarship (e.g., application deadlines, documents required, eligibility requirements).
-
-    - Offer Additional Support:
-      - Recommend other resources, such as tips on writing scholarship essays, or strategies to enhance their application.
-      - Suggest the student keep track of deadlines and provide options to save scholarships for future reference.
-
-    - Maintain a Supportive Tone:
-      - Be encouraging and motivational, understanding that this process can be overwhelming.
-      - Reassure the student that you are here to help them succeed and make the process as smooth as possible.
-
-      The scholarship details will be in additional context starting with scholarship_text: and user's query will start with query:        
-        """
+    """
 
     @staticmethod
     def generate_response(query, context):
-        genai.configure(api_key=GeminiLLM.API_KEY)
-        # Create the model
-        generation_config = {
-        "temperature": 1,
-        "top_p": 0.95,
-        "top_k": 64,
-        "max_output_tokens": 8192,
-        "response_mime_type": "text/plain",
-        }
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            generation_config=generation_config,
+        """
+        Generate a response from the Gemini API based on the provided query and context.
+        """
+        # Initialize the Gemini API client
+        genai.configure(api_key=GeminiLLM.API)
+        
+        # Create a chat model with the system prompt
+        model = genai.ChatModel(
             # safety_settings = Adjust safety settings
             # See https://ai.google.dev/gemini-api/docs/safety-settings
             system_instruction=GeminiLLM.system_prompt
         )
+        
+        # Start a chat session
         chat_session = model.start_chat()
+        
+        # Send a message to the chat session and get the response
         response = chat_session.send_message(f'scholarship_text:{context}\nquery:{query}')
+        
+        # Return the text of the response
         return response.text
         
 # Example usage
 if __name__ == "__main__":
+    # Define a query and context for the example
     query = "I am 19 years old. Which scholarship is available?"
     context = "The student is looking for scholarships available for 19-year-olds."
+    
+    # Generate a response using the GeminiLLM class
     response = GeminiLLM.generate_response(query, context)
+    
+    # Print the response
     print(response)
