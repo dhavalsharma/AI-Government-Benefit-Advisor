@@ -1,23 +1,14 @@
-print(4)
 import fitz  # PyMuPDF
-print(5)
 import os
-print(6)
 from sklearn.feature_extraction.text import TfidfVectorizer
-print(7)
 from sklearn.metrics.pairwise import cosine_similarity
-print(8)
 import numpy as np
-print(9)
 
 class RAGIndexer:
     def __init__(self, folder_path):
-        print(1)
         self.folder_path = folder_path
         self.pdf_texts = self.extract_text_from_pdfs()
-        print(2)
         self.vectorizer, self.vectors = self.index_texts()
-        print(3)
 
     def extract_text_from_pdfs(self):
         pdf_texts = {}
