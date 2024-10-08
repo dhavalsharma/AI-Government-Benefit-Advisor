@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Sri Sri Meri Government Schemes"
+msgstr "श्री श्री मेरी सरकारी योजनाएं"
+
+msgid "Gender"
+msgstr "लिंग"
+
+msgid "male"
+msgstr "पुरुष"
+
+msgid "female"
+msgstr "महिला"
+
+msgid "other"
+msgstr "अन्य"
+
+msgid "Age"
+msgstr "आयु"
+
+msgid "Academic Background"
+msgstr "शैक्षणिक पृष्ठभूमि"
+
+msgid "high school with 85% marks"
+msgstr "85% अंकों के साथ हाई स्कूल"
+
+msgid "Family Income in LPA"
+msgstr "परिवार की आय (LPA में)"
+
+msgid "Current Degree"
+msgstr "वर्तमान डिग्री"
+
+msgid "Bachelor of Engineering"
+msgstr "इंजीनियरिंग स्नातक"
+
+msgid "What would you like to know on government schemes?"
+msgstr "आप सरकारी योजनाओं के बारे में क्या जानना चाहेंगे?"
+
+msgid "Submit"
+msgstr "जमा करें"
+
+msgid "user"
+msgstr "उपयोगकर्ता"
+
+msgid "assistant"
+msgstr "सहायक"
+
+msgid "Processed response for: {text}"
+msgstr "प्रसंस्कृत प्रतिक्रिया: {text}"
+
+msgid "Enter your query here..."
+msgstr "अपनी क्वेरी यहां दर्ज करें..."

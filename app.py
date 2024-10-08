@@ -1,9 +1,17 @@
 import streamlit as st
 import os
+import gettext
 from io import BytesIO
 from rag_indexer import RAGIndexer
 from gemini import GeminiLLM
 
+# Set up translation
+localedir = os.path.join(os.path.dirname(__file__), 'locales')
+print(localedir)
+lang = st.sidebar.selectbox("Choose your language", ["en", "hi"])
+translation = gettext.translation('base', localedir, languages=[lang])
+translation.install()
+_ = translation.gettext
 
 class GovernmentSchemesChatbot:
     def __init__(self):
@@ -11,9 +19,9 @@ class GovernmentSchemesChatbot:
         self.rag_indexer = RAGIndexer('student_pdfs')
         self.sample_prompt = ""
         self.initialize_ui()
-
+    
     def initialize_ui(self):
-        st.title("Sri Sri Meri Government Schemes")
+        st.title(_("Sri Sri Meri Government Schemes"))
 
         with st.sidebar:
             self.display_form()
@@ -21,29 +29,28 @@ class GovernmentSchemesChatbot:
 
     def display_form(self):
         with st.form(key='user_form'):
-            gender = st.selectbox("Gender", ["male", "female", "other"], index=1)
-            age = st.number_input("Age", min_value=0, max_value=100, value=18)
-            academic_background = st.text_input("Academic Background", "high school with 85% marks")
-            family_income = st.number_input("Family Income in LPA", min_value=0, max_value=100, value=5)
-            current_degree = st.text_input("Current Degree", "Bachelor of Engineering")
-            institution = st.text_input("Institution (AICTE approved)", "VNIT Nagpur")
+            gender = st.selectbox(_("Gender"), [_("male"), _("female"), _("other")], index=1)
+            age = st.number_input(_("Age"), min_value=0, max_value=100, value=18)
+            academic_background = st.text_input(_("Academic Background"), _("high school with 85% marks"))
+            family_income = st.number_input(_("Family Income in LPA"), min_value=0, max_value=100, value=5)
+            current_degree = st.text_input(_("Current Degree"), _("Bachelor of Engineering"))
+            institution = st.text_input(_("Institution (AICTE approved)"), _("VNIT Nagpur"))
             response_language = st.selectbox(
-                "Response Language", 
-                ["English", "Hindi", "Tamil", "Telugu", "Bengali", "Marathi", 
-                 "Kannada", "Malayalam", "Gujarati", "Urdu"]
+                _("Response Language"), 
+                [_("English"), _("Hindi"), _("Tamil"), _("Telugu"), _("Bengali"), _("Marathi"), 
+                    _("Kannada"), _("Malayalam"), _("Gujarati"), _("Urdu")]
             )
-            submit_button = st.form_submit_button(label='Generate Sample Prompt')
-            
-            if submit_button:
-                self.sample_prompt = (
-                    f"I am a {gender} student with an age of {age} years and a "
-                    f"family income of {family_income} LPA. "
-                    f"My academic background is {academic_background}. "
-                    f"I am studying {current_degree} "
-                    f"at {institution}. What government scholarships are available for me?"
-                    f"please reply in {response_language}"
-                )
-                st.write(f"{self.sample_prompt}")
+            submit_button = st.form_submit_button(label=_('Generate Sample Prompt'))
+        if submit_button:
+            self.sample_prompt = (
+                f"I am a {gender} student with an age of {age} years and a "
+                f"family income of {family_income} LPA. "
+                f"My academic background is {academic_background}. "
+                f"I am studying {current_degree} "
+                f"at {institution}. What government scholarships are available for me?"
+                f"please reply in {response_language}"
+            )
+            st.write(f"{self.sample_prompt}")
 
     def handle_user_input(self):
         self.display_history()

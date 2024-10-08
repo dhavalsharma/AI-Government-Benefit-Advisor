@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Sri Sri Meri Government Schemes"
+msgstr "Sri Sri Meri Government Schemes"
+
+msgid "Gender"
+msgstr "Gender"
+
+msgid "male"
+msgstr "male"
+
+msgid "female"
+msgstr "female"
+
+msgid "other"
+msgstr "other"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "Academic Background"
+msgstr "Academic Background"
+
+msgid "high school with 85% marks"
+msgstr "high school with 85% marks"
+
+msgid "Family Income in LPA"
+msgstr "Family Income in LPA"
+
+msgid "Current Degree"
+msgstr "Current Degree"
+
+msgid "Bachelor of Engineering"
+msgstr "Bachelor of Engineering"
+
+msgid "What would you like to know on government schemes?"
+msgstr "What would you like to know on government schemes?"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "user"
+msgstr "user"
+
+msgid "assistant"
+msgstr "assistant"
+
+msgid "Processed response for: {text}"
+msgstr "Processed response for: {text}"
+
+msgid "Enter your query here..."
+msgstr "Enter your query here..."
