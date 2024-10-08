@@ -41,7 +41,7 @@ class GeminiLLM:
         genai.configure(api_key=GeminiLLM.API)
         
         # Create a chat model with the system prompt
-        model = genai.ChatModel(
+        model = genai.GenerativeModel(
             # safety_settings = Adjust safety settings
             # See https://ai.google.dev/gemini-api/docs/safety-settings
             system_instruction=GeminiLLM.system_prompt

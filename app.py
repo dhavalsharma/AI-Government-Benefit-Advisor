@@ -57,7 +57,7 @@ def process_text_input_top_n(text):
     return responses
 
 # Streamlit app
-st.title("Voice and Text Based Governemnt Scheme Matcher")
+st.title("Voice and Text Based Government Scheme Matcher")
 
 # Text input
 text_input = st.text_input("Enter your text here:")
