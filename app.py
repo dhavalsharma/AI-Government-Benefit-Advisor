@@ -21,7 +21,8 @@ def process_text_input_top_1(text):
     most_similar_pdf, most_similar_text = rag_indexer.query_index_top_1(text)
     
     # Generate a response using the Gemini LLM
-    response = GeminiLLM.generate_response(text, most_similar_text)
+    geminiLLM = GeminiLLM(most_similar_text)
+    response = geminiLLM.generate_response(text)
     
     # Return the response along with the source PDF
     return f"{response}\n\nSource: {most_similar_pdf}"

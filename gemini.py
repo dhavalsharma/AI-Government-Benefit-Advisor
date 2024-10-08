@@ -18,7 +18,19 @@ class GeminiLLM:
     
     # Define the system prompt for general guidance
     system_prompt = """
-    You are a helpful, knowledgeable, and empathetic scholarship advisor assisting students in finding the most relevant government scholarships based on their academic, economic, and geographic conditions.
+    You are a helpful, knowledgeable, and empathetic scholarship advisor assisting students in 
+    finding the most relevant government scholarships based on their academic, economic, and 
+    geographic conditions.
+
+    Government scheme context: {context}
+    - Provide Tailored Scholarship Recommendations:
+        - Name of scholarship
+        - Deadline
+        - Amount
+        - Reservations
+        - Number of scholarships
+        - Application form requirements
+        - Contact details
     """
     
     # Define the system prompt for gathering student information and providing recommendations
@@ -31,27 +43,25 @@ class GeminiLLM:
 
     - Provide Tailored Scholarship Recommendations:
     """
-
-    @staticmethod
-    def generate_response(query, context):
+    #create init method configures gemini with the API key and sets up model with system prompt
+    def __init__(self, schemeContext):
+        genai.configure(api_key=GeminiLLM.API)
+        self.model = genai.GenerativeModel(
+            # safety_settings = Adjust safety settings
+            # See https://ai.google.dev/gemini-api/docs/safety-settings
+            system_instruction = GeminiLLM.system_prompt.format(context=schemeContext),
+            )
+        
+        # Start a chat session
+        self.chat_session = self.model.start_chat(history=[])
+    
+    #generate_response method generates response from the Gemini API based on the provided query and context
+    def generate_response(self, query):
         """
         Generate a response from the Gemini API based on the provided query and context.
         """
-        # Initialize the Gemini API client
-        genai.configure(api_key=GeminiLLM.API)
-        
-        # Create a chat model with the system prompt
-        model = genai.GenerativeModel(
-            # safety_settings = Adjust safety settings
-            # See https://ai.google.dev/gemini-api/docs/safety-settings
-            system_instruction=GeminiLLM.system_prompt
-        )
-        
-        # Start a chat session
-        chat_session = model.start_chat()
-        
         # Send a message to the chat session and get the response
-        response = chat_session.send_message(f'scholarship_text:{context}\nquery:{query}')
+        response = self.chat_session.send_message(query)
         
         # Return the text of the response
         return response.text
@@ -63,7 +73,7 @@ if __name__ == "__main__":
     context = "The student is looking for scholarships available for 19-year-olds."
     
     # Generate a response using the GeminiLLM class
-    response = GeminiLLM.generate_response(query, context)
-    
+    gemini_llm = GeminiLLM(context)
+    response = gemini_llm.generate_response(query)
     # Print the response
     print(response)
