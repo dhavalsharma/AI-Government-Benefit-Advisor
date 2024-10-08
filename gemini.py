@@ -21,8 +21,10 @@ class GeminiLLM:
     You are a helpful, knowledgeable, and empathetic scholarship advisor assisting students in 
     finding the most relevant government scholarships based on their academic, economic, and 
     geographic conditions.
-
+    Be brief, clear, use short sentences, and provide accurate information. Do not halluciante or assume background of student like their disabilities, etc.
+    Do answer within the context of government schemes context given below:
     Government scheme context: {context}
+
     - Provide Tailored Scholarship Recommendations:
         - Name of scholarship
         - Deadline
@@ -55,6 +57,10 @@ class GeminiLLM:
         # Start a chat session
         self.chat_session = self.model.start_chat(history=[])
     
+    #share chat session 
+    def get_chat_session(self):
+        return self.chat_session
+    
     #generate_response method generates response from the Gemini API based on the provided query and context
     def generate_response(self, query):
         """
@@ -64,7 +70,7 @@ class GeminiLLM:
         response = self.chat_session.send_message(query)
         
         # Return the text of the response
-        return response.text
+        return response
         
 # Example usage
 if __name__ == "__main__":
